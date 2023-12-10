@@ -21,10 +21,10 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { createTahanan } from "@/actions/tahanan-action";
 import { Button } from "@/components/ui/button";
-import { AlertTriangleIcon } from "lucide-react";
+import { AlertTriangleIcon, Loader2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function FormTambah() {
@@ -135,7 +135,7 @@ export default function FormTambah() {
                             name="alamat"
                         />
                     </FormItemWrapper>
-                    <Button type="submit">Submit</Button>
+                    <SubmitButton />
                 </form>
             </CardContent>
             {/* <CardFooter></CardFooter> */}
@@ -153,5 +153,15 @@ function ErrorState({ children }: { children: React.ReactNode }) {
             {children && <AlertTriangleIcon size={18} />}
             {children}
         </p>
+    );
+}
+
+function SubmitButton() {
+    const { pending } = useFormStatus();
+
+    return (
+        <Button type="submit" aria-disabled={pending} disabled={pending}>
+            {pending && <Loader2Icon className="animate-spin" />} Submit
+        </Button>
     );
 }

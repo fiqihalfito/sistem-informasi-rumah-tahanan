@@ -21,8 +21,8 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn, convertDateToInputType } from "@/lib/utils";
-import { AlertTriangleIcon } from "lucide-react";
-import { useFormState } from "react-dom";
+import { AlertTriangleIcon, Loader2Icon } from "lucide-react";
+import { useFormState, useFormStatus } from "react-dom";
 
 import { agama } from "@/lib/constants/agama";
 import { jenisKelamin } from "@/lib/constants/jenis-kelamin";
@@ -144,7 +144,7 @@ export default function FormEdit(props: formEditTahananProp) {
                             defaultValue={props.alamat ?? ""}
                         />
                     </FormItemWrapper>
-                    <Button type="submit">Submit</Button>
+                    <SubmitButton />
                 </form>
             </CardContent>
             {/* <CardFooter></CardFooter> */}
@@ -162,5 +162,15 @@ function ErrorState({ children }: { children: React.ReactNode }) {
             {children && <AlertTriangleIcon size={18} />}
             {children}
         </p>
+    );
+}
+
+function SubmitButton() {
+    const { pending } = useFormStatus();
+
+    return (
+        <Button type="submit" aria-disabled={pending} disabled={pending}>
+            {pending && <Loader2Icon className="animate-spin" />} Submit
+        </Button>
     );
 }
