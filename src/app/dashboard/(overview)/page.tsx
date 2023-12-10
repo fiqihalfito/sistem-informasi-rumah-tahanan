@@ -6,6 +6,8 @@ import PageHeading from "@/components/dashboard/page-heading";
 import { fetchJenisKelaminChart, fetchKeteranganChart } from "@/lib/data";
 import { Suspense } from "react";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
     const [dataKeteranganChart, dataJenisKelaminChart] = await Promise.all([
         fetchKeteranganChart(),
