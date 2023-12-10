@@ -1,0 +1,1 @@
+ALTER TABLE "tahanan" RENAME COLUMN "jenis_kelamin" TO "jenis_xkelamin";

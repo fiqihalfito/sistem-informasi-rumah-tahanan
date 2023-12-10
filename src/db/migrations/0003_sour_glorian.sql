@@ -1,0 +1,1 @@
+ALTER TABLE "tahanan" ALTER COLUMN "jenis_kelamin" SET DATA TYPE varchar(254);

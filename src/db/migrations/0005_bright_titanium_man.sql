@@ -1,0 +1,1 @@
+ALTER TABLE "tahanan" ALTER COLUMN "nama" SET NOT NULL;

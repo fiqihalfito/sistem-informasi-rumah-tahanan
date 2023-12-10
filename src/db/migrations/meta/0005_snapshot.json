@@ -1,0 +1,215 @@
+{
+  "id": "4cd9b79f-d1be-4764-8ad1-8830161756b4",
+  "prevId": "c5c6068b-4424-4c0d-93ba-e330b3bcdf8a",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "makan": {
+      "name": "makan",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "id_tahanan": {
+          "name": "id_tahanan",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dapat_makan_siang_pertama": {
+          "name": "dapat_makan_siang_pertama",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dapat_makan_malam_pertama": {
+          "name": "dapat_makan_malam_pertama",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dapat_makan_siang_terakhir": {
+          "name": "dapat_makan_siang_terakhir",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dapat_makan_malam_terakhir": {
+          "name": "dapat_makan_malam_terakhir",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "penahanan": {
+      "name": "penahanan",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "id_tahanan": {
+          "name": "id_tahanan",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "nomor_surat_penahanan": {
+          "name": "nomor_surat_penahanan",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tanggal_masuk": {
+          "name": "tanggal_masuk",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jam_masuk": {
+          "name": "jam_masuk",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "nomor_surat_keluar": {
+          "name": "nomor_surat_keluar",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tanggal_keluar": {
+          "name": "tanggal_keluar",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jam_keluar": {
+          "name": "jam_keluar",
+          "type": "time",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pasal": {
+          "name": "pasal",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "keterangan": {
+          "name": "keterangan",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "penahanan_id_tahanan_unique": {
+          "name": "penahanan_id_tahanan_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "id_tahanan"
+          ]
+        }
+      }
+    },
+    "tahanan": {
+      "name": "tahanan",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "nama": {
+          "name": "nama",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tempat_lahir": {
+          "name": "tempat_lahir",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "tanggal_lahir": {
+          "name": "tanggal_lahir",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pekerjaan": {
+          "name": "pekerjaan",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "agama": {
+          "name": "agama",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "alamat": {
+          "name": "alamat",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "jenis_kelamin": {
+          "name": "jenis_kelamin",
+          "type": "varchar(254)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "image": {
+          "name": "image",
+          "type": "varchar(256)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  }
+}
