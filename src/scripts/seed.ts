@@ -1,6 +1,7 @@
 import "dotenv/config";
-import { client, db } from "@/db/connect";
+import { db } from "@/db/connect";
 import { penahanan, tahanan } from "@/db/schema";
+import { sql } from "@vercel/postgres";
 
 const tahanans = [
     {
@@ -167,5 +168,6 @@ async function seed() {
 (async () => {
     await seed();
 
-    await client.end();
+    // await client.end();
+    await sql.end();
 })();
