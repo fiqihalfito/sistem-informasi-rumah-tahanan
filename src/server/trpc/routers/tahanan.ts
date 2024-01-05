@@ -23,10 +23,12 @@ export const tahananRouter = router({
             z.object({
                 query: z.string(),
                 limit: z.number(),
-                page: z.number(),
+                page: z.coerce.number(),
             })
         )
         .query(async (opt) => {
+            // await wait(3000);
+
             const { query, limit, page } = opt.input;
 
             let newPage;

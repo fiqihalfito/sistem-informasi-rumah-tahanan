@@ -8,7 +8,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { convertDateToString } from "@/lib/utils";
+import { convertDateToString, wait } from "@/lib/utils";
 import { serverTrpc } from "@/server/trpc/server-caller";
 import { OrbitIcon, SearchXIcon } from "lucide-react";
 import { Badge } from "../ui/badge";
@@ -16,12 +16,6 @@ import DeleteButton from "./delete-button";
 import EditButton from "./edit-button";
 import TahananPagination from "./tahanan-pagination";
 import ViewButton from "./view-button";
-// import TahananPagination from "./tahanan-pagination";
-// import dynamic from "next/dynamic";
-
-// const TahananPagination = dynamic(() => import("./tahanan-pagination"), {
-//     ssr: false,
-// });
 
 interface TableTahananProp {
     query: string;
@@ -32,10 +26,8 @@ export default async function TableTahanan({ query, page }: TableTahananProp) {
     const tahanan = await serverTrpc.tahanan.fetchTableTahanan({
         query: query,
         limit: 3,
-        page: Number(page),
+        page: page,
     });
-
-    // await wait(3000);
 
     return (
         <>
@@ -95,6 +87,7 @@ export default async function TableTahanan({ query, page }: TableTahananProp) {
                     </p>
                 </div>
             )}
+            {/* <TahananPagination pages={tahanan.totalPages} /> */}
         </>
     );
 }

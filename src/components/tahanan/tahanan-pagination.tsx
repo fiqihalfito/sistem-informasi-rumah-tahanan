@@ -8,9 +8,10 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 
 export default function TahananPagination({ pages }: { pages: number }) {
+    const pathName = usePathname();
     const searchParams = useSearchParams();
     const params = new URLSearchParams(searchParams);
     const activePage = params.get("page") || 1;
@@ -39,7 +40,7 @@ export default function TahananPagination({ pages }: { pages: number }) {
                     {paramMap.map((param, i) => (
                         <PaginationItem key={i}>
                             <PaginationLink
-                                href={`/dashboard/tahanan?${param}`}
+                                href={`${pathName}?${param}`}
                                 isActive={i + 1 == activePage}
                             >
                                 {i + 1}

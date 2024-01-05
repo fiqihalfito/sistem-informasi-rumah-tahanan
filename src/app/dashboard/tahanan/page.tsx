@@ -5,6 +5,7 @@ import TableTahanan, {
 } from "@/components/tahanan/table-tahanan";
 import TahananPagination from "@/components/tahanan/tahanan-pagination";
 import TambahTahanan from "@/components/tahanan/tambah-tahanan";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export default async function Page({
@@ -20,6 +21,16 @@ export default async function Page({
         <main>
             <PageHeading>Tahanan</PageHeading>
 
+            {/* <Link
+                href={{
+                    pathname: "/dashboard/tahanan",
+                    query: {
+                        page: 2,
+                    },
+                }}
+            >
+                page 2
+            </Link> */}
             <div className="flex items-center gap-x-4 mb-6">
                 <SearchBar placeholder="Cari tahanan ..." />
                 <TambahTahanan />
@@ -28,6 +39,7 @@ export default async function Page({
                 <Suspense key={query} fallback={<SkeletonTableTahanan />}>
                     <TableTahanan query={query} page={page} />
                 </Suspense>
+                {/* <TahananPagination pages={2} /> */}
             </div>
         </main>
     );
