@@ -28,7 +28,7 @@ export default async function TableTahanan({ query }: { query: string }) {
         query: query,
     });
 
-    await wait(3000);
+    // await wait(3000);
 
     return (
         <Table className="bg-white border">
