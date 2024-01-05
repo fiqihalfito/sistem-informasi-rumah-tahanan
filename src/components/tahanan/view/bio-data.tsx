@@ -1,10 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchBiodataTahanan } from "@/lib/data";
 import { convertDateToString } from "@/lib/utils";
-import TahananImage from "./tahanan-image";
+import { serverTrpc } from "@/server/trpc/server-caller";
 
 export default async function Biodata({ id }: { id: number }) {
-    const data = await fetchBiodataTahanan(id);
+    const data = await serverTrpc.tahanan.fetchBiodataTahanan({
+        id: Number(id),
+    });
 
     return (
         <Card className="w-96">

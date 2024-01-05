@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { fetchOverviewData } from "@/lib/data";
+import { serverTrpc } from "@/server/trpc/server-caller";
 import {
     CalendarCheck2Icon,
     LucideIcon,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 export default async function OverviewCards() {
-    const data = await fetchOverviewData();
+    const data = await serverTrpc.tahanan.fetchOverviewTahanan();
 
     return (
         <>

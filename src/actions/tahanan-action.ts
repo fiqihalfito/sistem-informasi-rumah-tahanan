@@ -1,63 +1,44 @@
 "use server";
-import { penahanan, tahanan } from "@/db/schema";
-import { createInsertSchema } from "drizzle-zod";
+import { TahananFormState } from "@/lib/definitions";
+import { serverTrpc } from "@/server/trpc/server-caller";
+import { TRPCError } from "@trpc/server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
-import { db } from "@/db/connect";
-import { eq } from "drizzle-orm";
+import { ZodError } from "zod";
 
-const tahananSchema = createInsertSchema(tahanan, {
-    nama: z.string({ invalid_type_error: "nama harap diisi!" }),
-    agama: z.string({ invalid_type_error: "agama harap diisi!" }),
-});
-const insertTahananSchema = tahananSchema.omit({
-    id: true,
-    created_at: true,
-    image: true,
-});
-
-const updateTahananSchema = insertTahananSchema;
-
-type State = {
-    errors?: {
-        [key in keyof z.infer<typeof insertTahananSchema>]?: string[];
-    };
-    message?: string | null;
-};
-
-export async function createTahanan(prevState: State, formData: FormData) {
-    const validation = insertTahananSchema.safeParse({
-        nama: formData.get("nama") || null,
-        tempatLahir: formData.get("tempat_lahir") || null,
-        tanggalLahir: formData.get("tanggal_lahir") || null,
-        pekerjaan: formData.get("pekerjaan") || null,
-        agama: formData.get("agama") || null,
-        alamat: formData.get("alamat") || null,
-        jenisKelamin: formData.get("jenis_kelamin") || null,
-    });
-
-    if (!validation.success) {
-        const errors: State = {
-            errors: validation.error.flatten().fieldErrors,
-            message: "there is error",
-        };
-        return errors;
-    }
-
+export async function createTahanan(
+    prevState: TahananFormState,
+    formData: FormData
+) {
     try {
-        // data tahanan dan return idTahanan
-        const newTahanan = await db
-            .insert(tahanan)
-            .values(validation.data)
-            .returning({ idTahanan: tahanan.id });
-
-        // data penahanan and use returned idTahanan
-        await db.insert(penahanan).values({
-            idTahanan: newTahanan[0].idTahanan,
+        await serverTrpc.tahanan.add({
+            nama: formData.get("nama") as string,
+            tempatLahir: (formData.get("tempat_lahir") as string) || null,
+            tanggalLahir: (formData.get("tanggal_lahir") as string) || null,
+            pekerjaan: (formData.get("pekerjaan") as string) || null,
+            agama: formData.get("agama") as string,
+            alamat: (formData.get("alamat") as string) || null,
+            jenisKelamin: formData.get("jenis_kelamin") as string,
         });
     } catch (error) {
-        console.log(error);
+        if (error instanceof TRPCError) {
+            if (error.cause instanceof ZodError) {
+                const errors: TahananFormState = {
+                    errors: error.cause.flatten().fieldErrors,
+                    message: "there is field error",
+                };
+
+                return errors;
+            }
+        }
+
+        // unknown errors
+        if (error instanceof Error) {
+            return {
+                errors: {},
+                message: error.message,
+            };
+        }
     }
 
     revalidatePath("/dashboard/tahanan");
@@ -66,31 +47,39 @@ export async function createTahanan(prevState: State, formData: FormData) {
 
 export async function updateTahanan(
     id: number,
-    prevState: State,
+    prevState: TahananFormState,
     formData: FormData
 ) {
-    const validation = updateTahananSchema.safeParse({
-        nama: formData.get("nama") || null,
-        tempatLahir: formData.get("tempat_lahir") || null,
-        tanggalLahir: formData.get("tanggal_lahir") || null,
-        pekerjaan: formData.get("pekerjaan") || null,
-        agama: formData.get("agama") || null,
-        alamat: formData.get("alamat") || null,
-        jenisKelamin: formData.get("jenis_kelamin") || null,
-    });
-
-    if (!validation.success) {
-        const errors: State = {
-            errors: validation.error.flatten().fieldErrors,
-            message: "there is error",
-        };
-        return errors;
-    }
-
     try {
-        await db.update(tahanan).set(validation.data).where(eq(tahanan.id, id));
+        await serverTrpc.tahanan.update({
+            id: id,
+            nama: formData.get("nama") as string,
+            tempatLahir: (formData.get("tempat_lahir") as string) || null,
+            tanggalLahir: (formData.get("tanggal_lahir") as string) || null,
+            pekerjaan: (formData.get("pekerjaan") as string) || null,
+            agama: formData.get("agama") as string,
+            alamat: (formData.get("alamat") as string) || null,
+            jenisKelamin: formData.get("jenis_kelamin") as string,
+        });
     } catch (error) {
-        console.log(error);
+        if (error instanceof TRPCError) {
+            if (error.cause instanceof ZodError) {
+                const errors: TahananFormState = {
+                    errors: error.cause.flatten().fieldErrors,
+                    message: "there is field error",
+                };
+
+                return errors;
+            }
+        }
+
+        // unknown errors
+        if (error instanceof Error) {
+            return {
+                errors: {},
+                message: "update error",
+            };
+        }
     }
 
     revalidatePath(`/dashboard/tahanan/${id}`);
@@ -99,15 +88,15 @@ export async function updateTahanan(
 
 export async function deleteTahanan(id: number) {
     try {
-        await Promise.all([
-            db.delete(tahanan).where(eq(tahanan.id, id)),
-            db.delete(penahanan).where(eq(penahanan.idTahanan, id)),
-        ]);
+        await serverTrpc.tahanan.delete({ id: id });
 
         revalidatePath("/dashboard/tahanan");
         return { message: "delete successful" };
     } catch (error) {
-        console.log(error);
+        if (error instanceof Error) {
+            console.log(error.message);
+            return { message: error.message };
+        }
         return { message: "delete failed" };
     }
 }

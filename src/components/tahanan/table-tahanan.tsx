@@ -6,15 +6,17 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { fetchTableTahanan } from "@/lib/data";
 import { convertDateToString } from "@/lib/utils";
-import ViewButton from "./view-button";
+import { serverTrpc } from "@/server/trpc/server-caller";
+import { Badge } from "../ui/badge";
 import DeleteButton from "./delete-button";
 import EditButton from "./edit-button";
-import { Badge } from "../ui/badge";
+import ViewButton from "./view-button";
 
 export default async function TableTahanan({ query }: { query: string }) {
-    const tahanan = await fetchTableTahanan(query);
+    const tahanan = await serverTrpc.tahanan.fetchTableTahanan({
+        query: query,
+    });
 
     return (
         <Table className="bg-white border">

@@ -56,3 +56,7 @@ export function convertDateToInputType(postgresDate: Date | string | null) {
 
     return formattedDate;
 }
+
+export function isStringNotEmpty(value: string) {
+    return value.trim() !== "";
+}

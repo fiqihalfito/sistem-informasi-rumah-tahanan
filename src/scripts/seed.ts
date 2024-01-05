@@ -2,6 +2,7 @@ import "dotenv/config";
 import { db } from "@/db/connect";
 import { penahanan, tahanan } from "@/db/schema";
 import { sql } from "@vercel/postgres";
+import { client, migrationClient } from "@/db/drivers/postgresjs";
 
 const tahanans = [
     {
@@ -148,15 +149,12 @@ const penahanans = [
 ];
 
 async function seed() {
-    const newTahanans = await db
-        .insert(tahanan)
-        .values(tahanans)
-        .returning({ idTahanan: tahanan.id });
+    const newTahanans = await db.insert(tahanan).values(tahanans).returning();
 
     const penahanansWithIdTahanan = penahanans.map((item, i) => {
         const newItem = {
             ...item,
-            idTahanan: newTahanans[i].idTahanan,
+            idTahanan: newTahanans[i].id,
         };
 
         return newItem;
@@ -168,6 +166,6 @@ async function seed() {
 (async () => {
     await seed();
 
-    // await client.end();
-    await sql.end();
+    await client.end();
+    // await sql.end();
 })();

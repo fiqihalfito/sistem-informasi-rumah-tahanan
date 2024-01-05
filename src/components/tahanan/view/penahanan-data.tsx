@@ -4,14 +4,15 @@ import {
     CardDescription,
     CardFooter,
     CardHeader,
-    CardTitle,
 } from "@/components/ui/card";
 import DividerX from "@/components/ui/divider-x";
-import { fetchPenahananData } from "@/lib/data";
 import { convertDateToString, convertTimestampToString } from "@/lib/utils";
+import { serverTrpc } from "@/server/trpc/server-caller";
 
 export default async function PenahananData({ id }: { id: number }) {
-    const data = await fetchPenahananData(id);
+    const data = await serverTrpc.tahanan.fetchPenahananData({
+        id: Number(id),
+    });
 
     return (
         <Card className="grow">

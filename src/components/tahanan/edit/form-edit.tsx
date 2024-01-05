@@ -26,15 +26,16 @@ import { useFormState, useFormStatus } from "react-dom";
 
 import { agama } from "@/lib/constants/agama";
 import { jenisKelamin } from "@/lib/constants/jenis-kelamin";
-import { formEditTahananProp } from "@/lib/definitions";
+import { TahananFormState, formEditTahananProp } from "@/lib/definitions";
 
 export default function FormEdit(props: formEditTahananProp) {
-    const initialState = {
+    const initialState: TahananFormState = {
         message: null,
         errors: {},
     };
     const updateTahananWithId = updateTahanan.bind(null, props.id);
     const [state, formAction] = useFormState(updateTahananWithId, initialState);
+    console.log(state);
 
     return (
         <Card className="">

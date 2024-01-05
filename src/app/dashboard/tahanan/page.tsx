@@ -1,4 +1,3 @@
-import Breadcrumbs from "@/components/dashboard/breadcrumbs";
 import PageHeading from "@/components/dashboard/page-heading";
 import SearchBar from "@/components/tahanan/search";
 import TableTahanan from "@/components/tahanan/table-tahanan";
@@ -13,9 +12,6 @@ export default async function Page({
     const query = searchParams?.query ?? "";
     return (
         <main>
-            <Breadcrumbs
-                items={[{ title: "Tahanan", url: "/dashboard/tahanan" }]}
-            />
             <PageHeading>Tahanan</PageHeading>
 
             <div className="flex items-center gap-x-4 mb-6">

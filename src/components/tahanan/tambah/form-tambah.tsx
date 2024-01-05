@@ -26,13 +26,19 @@ import { createTahanan } from "@/actions/tahanan-action";
 import { Button } from "@/components/ui/button";
 import { AlertTriangleIcon, Loader2Icon } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { serverTrpc } from "@/server/trpc/server-caller";
+import { TahananFormState } from "@/lib/definitions";
 
 export default function FormTambah() {
-    const initialState = {
-        message: null,
+    const initialState: TahananFormState = {
         errors: {},
+        message: null,
     };
     const [state, formAction] = useFormState(createTahanan, initialState);
+
+    if (state.message) {
+        console.log(state);
+    }
 
     return (
         <Card className=" ">
