@@ -1,11 +1,10 @@
 import { fetchJenisKelaminChart } from "@/lib/data/fetchJenisKelaminChart";
+import { cn, wait } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import JenisKelaminChart from "./charts/jeniskelamin-chart";
-import { cn } from "@/lib/utils";
 
 export default async function JenisKelaminCard() {
     const data = await fetchJenisKelaminChart();
-
+    // await wait(3000);
     return (
         <Card className="border-b-4 border-b-primary ">
             <CardHeader>
@@ -23,6 +22,31 @@ export default async function JenisKelaminCard() {
                         >
                             <span className="">{item.jenisKelamin}</span>
                             <span>{item.jumlah}</span>
+                        </li>
+                    ))}
+                </ul>
+            </CardContent>
+        </Card>
+    );
+}
+
+export function SkeletonJenisKelaminCard() {
+    return (
+        <Card className="border-b-4 border-b-slate-300 animate-pulse ">
+            <CardHeader>
+                <CardTitle>
+                    <div className="h-6 w-40 bg-slate-300" />
+                </CardTitle>
+            </CardHeader>
+            <CardContent className="">
+                <ul className={cn("grid divide-x grid-cols-2")}>
+                    {Array.from({ length: 2 }, (v, i) => (
+                        <li
+                            key={i}
+                            className="flex flex-col items-center gap-y-2"
+                        >
+                            <span className="h-4 w-20 bg-slate-300"></span>
+                            <span className="h-4 w-6 bg-slate-300"></span>
                         </li>
                     ))}
                 </ul>

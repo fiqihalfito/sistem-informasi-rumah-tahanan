@@ -1,6 +1,12 @@
-import AgamaCard from "@/components/dashboard/agama-card";
-import JenisKelaminCard from "@/components/dashboard/jeniskelamin-card";
-import KeteranganCard from "@/components/dashboard/keterangan-card";
+import AgamaCard, {
+    SkeletonAgamaCard,
+} from "@/components/dashboard/agama-card";
+import JenisKelaminCard, {
+    SkeletonJenisKelaminCard,
+} from "@/components/dashboard/jeniskelamin-card";
+import KeteranganCard, {
+    SkeletonKeteranganCard,
+} from "@/components/dashboard/keterangan-card";
 import OverviewCards from "@/components/dashboard/overview-cards";
 import PageHeading from "@/components/dashboard/page-heading";
 import OverviewSkeleton from "@/components/skeletons/overview-skeleton";
@@ -18,14 +24,14 @@ export default async function DashboardPage() {
                 </Suspense>
             </div>
             <div className="grid grid-cols-2 grid-rows-2 gap-x-4 gap-y-4">
-                <Suspense fallback={"memuat keterangan charts..."}>
+                <Suspense fallback={<SkeletonKeteranganCard />}>
                     <KeteranganCard className="row-span-2" />
                 </Suspense>
-                <Suspense fallback={"memuat jenis kelamin charts..."}>
+                <Suspense fallback={<SkeletonAgamaCard />}>
                     {/* <JenisKelaminCard /> */}
                     <AgamaCard />
                 </Suspense>
-                <Suspense fallback={"memuat jenis kelamin charts..."}>
+                <Suspense fallback={<SkeletonJenisKelaminCard />}>
                     <JenisKelaminCard />
                 </Suspense>
             </div>

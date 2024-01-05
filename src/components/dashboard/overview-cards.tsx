@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { wait } from "@/lib/utils";
 import { serverTrpc } from "@/server/trpc/server-caller";
 import {
     CalendarCheck2Icon,
@@ -10,7 +11,7 @@ import {
 
 export default async function OverviewCards() {
     const data = await serverTrpc.tahanan.fetchOverviewTahanan();
-
+    // await wait(4000);
     return (
         <>
             <CardItem

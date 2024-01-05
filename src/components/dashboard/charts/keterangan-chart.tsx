@@ -31,6 +31,7 @@ export default function KeteranganChart({ data }: KeteranganChartProp) {
                     fontSize={12}
                     tickLine={false}
                     axisLine={false}
+                    color="#ff0"
                 />
                 <YAxis
                     stroke="#888888"
@@ -39,7 +40,7 @@ export default function KeteranganChart({ data }: KeteranganChartProp) {
                     axisLine={false}
                     // tickFormatter={(value) => `$${value}`}
                 />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip content={<CustomTooltip />} cursor={false} />
                 {/* <Legend /> */}
                 <Bar dataKey="jumlah" fill="#facc15" radius={[4, 4, 0, 0]} />
             </BarChart>

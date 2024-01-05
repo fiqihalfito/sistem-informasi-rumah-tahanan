@@ -121,6 +121,17 @@ export const tahananRouter = router({
             .groupBy(tahanan.agama);
         return data;
     }),
+    fetchTahananTotalByKeterangan: publicProcedure.query(async (opt) => {
+        const data = await db
+            .select({
+                keterangan: penahanan.keterangan,
+                jumlah: sql<number>`cast(count(${penahanan.id}) as int)`,
+            })
+            .from(penahanan)
+            .groupBy(penahanan.keterangan);
+
+        return data;
+    }),
     add: publicProcedure.input(tahananSchema).mutation(async (opts) => {
         const data = opts.input;
         try {
