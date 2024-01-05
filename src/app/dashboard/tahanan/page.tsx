@@ -20,26 +20,17 @@ export default async function Page({
     return (
         <main>
             <PageHeading>Tahanan</PageHeading>
-
-            {/* <Link
-                href={{
-                    pathname: "/dashboard/tahanan",
-                    query: {
-                        page: 2,
-                    },
-                }}
-            >
-                page 2
-            </Link> */}
             <div className="flex items-center gap-x-4 mb-6">
                 <SearchBar placeholder="Cari tahanan ..." />
                 <TambahTahanan />
             </div>
             <div>
-                <Suspense key={query} fallback={<SkeletonTableTahanan />}>
+                <Suspense
+                    key={`${query}+${page}`}
+                    fallback={<SkeletonTableTahanan />}
+                >
                     <TableTahanan query={query} page={page} />
                 </Suspense>
-                {/* <TahananPagination pages={2} /> */}
             </div>
         </main>
     );

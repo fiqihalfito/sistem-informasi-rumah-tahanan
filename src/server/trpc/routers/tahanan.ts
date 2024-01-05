@@ -27,6 +27,8 @@ export const tahananRouter = router({
             })
         )
         .query(async (opt) => {
+            // console.log("fetching");
+
             // await wait(3000);
 
             const { query, limit, page } = opt.input;
