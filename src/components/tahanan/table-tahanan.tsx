@@ -6,17 +6,29 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { convertDateToString } from "@/lib/utils";
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+
+import { convertDateToString, wait } from "@/lib/utils";
 import { serverTrpc } from "@/server/trpc/server-caller";
 import { Badge } from "../ui/badge";
 import DeleteButton from "./delete-button";
 import EditButton from "./edit-button";
 import ViewButton from "./view-button";
+import { OrbitIcon } from "lucide-react";
 
 export default async function TableTahanan({ query }: { query: string }) {
     const tahanan = await serverTrpc.tahanan.fetchTableTahanan({
         query: query,
     });
+
+    await wait(3000);
 
     return (
         <Table className="bg-white border">
@@ -78,4 +90,23 @@ function isRelease(releaseDate?: Date | string | null): boolean {
     }
 
     return true;
+}
+
+export function SkeletonTableTahanan() {
+    return (
+        <Card className="animate-pulse">
+            {/* <CardHeader>
+                <CardTitle>Sedang mencari</CardTitle>
+                <CardDescription>Card Description</CardDescription>
+            </CardHeader> */}
+            <CardContent className=" p-0 ">
+                <div className="flex flex-col gap-y-4 items-center justify-center h-96">
+                    <OrbitIcon className="animate-spin size-20 stroke-slate-600" />
+                    <p className="text-lg font-semibold text-slate-600">
+                        sedang memuat ...
+                    </p>
+                </div>
+            </CardContent>
+        </Card>
+    );
 }

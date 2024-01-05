@@ -1,4 +1,3 @@
-import { fetchKeteranganChart } from "@/lib/data/fetchKeteranganChart";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import KeteranganChart from "./charts/keterangan-chart";
 import { cn, wait } from "@/lib/utils";

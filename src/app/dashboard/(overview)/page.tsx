@@ -28,7 +28,6 @@ export default async function DashboardPage() {
                     <KeteranganCard className="row-span-2" />
                 </Suspense>
                 <Suspense fallback={<SkeletonAgamaCard />}>
-                    {/* <JenisKelaminCard /> */}
                     <AgamaCard />
                 </Suspense>
                 <Suspense fallback={<SkeletonJenisKelaminCard />}>

@@ -1,6 +1,8 @@
 import PageHeading from "@/components/dashboard/page-heading";
 import SearchBar from "@/components/tahanan/search";
-import TableTahanan from "@/components/tahanan/table-tahanan";
+import TableTahanan, {
+    SkeletonTableTahanan,
+} from "@/components/tahanan/table-tahanan";
 import TambahTahanan from "@/components/tahanan/tambah-tahanan";
 import { Suspense } from "react";
 
@@ -19,7 +21,7 @@ export default async function Page({
                 <TambahTahanan />
             </div>
             <div>
-                <Suspense key={query} fallback={<p>Memuat table...</p>}>
+                <Suspense key={query} fallback={<SkeletonTableTahanan />}>
                     <TableTahanan query={query} />
                 </Suspense>
             </div>

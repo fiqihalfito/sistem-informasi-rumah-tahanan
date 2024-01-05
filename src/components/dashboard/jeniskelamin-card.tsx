@@ -1,10 +1,11 @@
-import { fetchJenisKelaminChart } from "@/lib/data/fetchJenisKelaminChart";
 import { cn, wait } from "@/lib/utils";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { serverTrpc } from "@/server/trpc/server-caller";
 
 export default async function JenisKelaminCard() {
-    const data = await fetchJenisKelaminChart();
-    // await wait(3000);
+    // const data = await fetchJenisKelaminChart();
+    const data = await serverTrpc.tahanan.fetchTahananTotalByJenisKelamin();
+    await wait(3000);
     return (
         <Card className="border-b-4 border-b-primary ">
             <CardHeader>
