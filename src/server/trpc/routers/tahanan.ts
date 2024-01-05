@@ -5,6 +5,7 @@ import { count, desc, eq, ilike, sql } from "drizzle-orm";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 import { publicProcedure, router } from "../trpc";
+import { PgSelect } from "drizzle-orm/pg-core";
 
 export const tahananSchema = createInsertSchema(tahanan, {
     nama: z
@@ -18,11 +19,24 @@ export const tahananSchema = createInsertSchema(tahanan, {
 
 export const tahananRouter = router({
     fetchTableTahanan: publicProcedure
-        .input(z.object({ query: z.string() }))
+        .input(
+            z.object({
+                query: z.string(),
+                limit: z.number(),
+                page: z.number(),
+            })
+        )
         .query(async (opt) => {
-            const query = opt.input.query;
+            const { query, limit, page } = opt.input;
 
-            return await db
+            let newPage;
+            if (page == 1 || page == 0) {
+                newPage = 0;
+            } else {
+                newPage = page - 1;
+            }
+
+            const data = await db
                 .select({
                     id: tahanan.id,
                     nama: tahanan.nama,
@@ -35,7 +49,20 @@ export const tahananRouter = router({
                 .from(tahanan)
                 .leftJoin(penahanan, eq(tahanan.id, penahanan.idTahanan))
                 .orderBy(desc(penahanan.tanggalMasuk))
+                .where(ilike(tahanan.nama, `%${query}%`))
+                .limit(limit)
+                .offset(newPage * limit);
+
+            const rows = await db
+                .select({
+                    count: count(),
+                })
+                .from(tahanan)
                 .where(ilike(tahanan.nama, `%${query}%`));
+
+            const totalPages = Math.ceil(rows[0].count / limit);
+
+            return { data, totalPages };
         }),
     fetchOverviewTahanan: publicProcedure.query(async () => {
         // await wait(3000);
@@ -186,3 +213,11 @@ export const tahananRouter = router({
             }
         }),
 });
+
+async function withPagination<T extends PgSelect>(
+    qb: T,
+    page: number,
+    limit: number = 2
+) {
+    return await qb.limit(limit).offset(page * limit);
+}

@@ -1,3 +1,4 @@
+import { Card, CardContent } from "@/components/ui/card";
 import {
     Table,
     TableBody,
@@ -6,72 +7,95 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
 
-import { convertDateToString, wait } from "@/lib/utils";
+import { convertDateToString } from "@/lib/utils";
 import { serverTrpc } from "@/server/trpc/server-caller";
+import { OrbitIcon, SearchXIcon } from "lucide-react";
 import { Badge } from "../ui/badge";
 import DeleteButton from "./delete-button";
 import EditButton from "./edit-button";
+import TahananPagination from "./tahanan-pagination";
 import ViewButton from "./view-button";
-import { OrbitIcon } from "lucide-react";
+// import TahananPagination from "./tahanan-pagination";
+// import dynamic from "next/dynamic";
 
-export default async function TableTahanan({ query }: { query: string }) {
+// const TahananPagination = dynamic(() => import("./tahanan-pagination"), {
+//     ssr: false,
+// });
+
+interface TableTahananProp {
+    query: string;
+    page: number;
+}
+
+export default async function TableTahanan({ query, page }: TableTahananProp) {
     const tahanan = await serverTrpc.tahanan.fetchTableTahanan({
         query: query,
+        limit: 3,
+        page: Number(page),
     });
 
     // await wait(3000);
 
     return (
-        <Table className="bg-white border">
-            {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
-            <TableHeader>
-                <TableRow>
-                    <TableHead>Nama</TableHead>
-                    <TableHead>Nomor Surat Penahanan</TableHead>
-                    <TableHead>Tanggal Masuk</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead></TableHead>
-                </TableRow>
-            </TableHeader>
-            <TableBody>
-                {tahanan.map((item) => (
-                    <TableRow key={item.id}>
-                        <TableCell>{item.nama}</TableCell>
-                        <TableCell>
-                            {item.penahanan?.nomorSuratPenahanan ?? "-"}
-                        </TableCell>
-                        <TableCell>
-                            {convertDateToString(
-                                item.penahanan?.tanggalMasuk
-                            ) ?? "-"}
-                        </TableCell>
-                        <TableCell>
-                            {isRelease(item.penahanan?.tanggalKeluar) ? (
-                                <Badge className="bg-green-400">bebas</Badge>
-                            ) : (
-                                <Badge className="bg-primary">ditahan</Badge>
-                            )}
-                        </TableCell>
-                        <TableCell>
-                            <div className="flex items-center gap-x-1 justify-end">
-                                <ViewButton id={item.id} />
-                                <DeleteButton id={item.id} />
-                                <EditButton id={item.id} />
-                            </div>
-                        </TableCell>
+        <>
+            <Table className="bg-white border">
+                {/* <TableCaption>A list of your recent invoices.</TableCaption> */}
+                <TableHeader>
+                    <TableRow>
+                        <TableHead>Nama</TableHead>
+                        <TableHead>Nomor Surat Penahanan</TableHead>
+                        <TableHead>Tanggal Masuk</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead></TableHead>
                     </TableRow>
-                ))}
-            </TableBody>
-        </Table>
+                </TableHeader>
+                <TableBody>
+                    {tahanan.data.map((item) => (
+                        <TableRow key={item.id}>
+                            <TableCell>{item.nama}</TableCell>
+                            <TableCell>
+                                {item.penahanan?.nomorSuratPenahanan ?? "-"}
+                            </TableCell>
+                            <TableCell>
+                                {convertDateToString(
+                                    item.penahanan?.tanggalMasuk
+                                ) ?? "-"}
+                            </TableCell>
+                            <TableCell>
+                                {isRelease(item.penahanan?.tanggalKeluar) ? (
+                                    <Badge className="bg-green-400">
+                                        bebas
+                                    </Badge>
+                                ) : (
+                                    <Badge className="bg-primary">
+                                        ditahan
+                                    </Badge>
+                                )}
+                            </TableCell>
+                            <TableCell>
+                                <div className="flex items-center gap-x-1 justify-end">
+                                    <ViewButton id={item.id} />
+                                    <DeleteButton id={item.id} />
+                                    <EditButton id={item.id} />
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+
+            {tahanan.totalPages !== 0 ? (
+                <TahananPagination pages={tahanan.totalPages} />
+            ) : (
+                <div className="shadow h-80 flex flex-col gap-y-4 items-center justify-center bg-white rounded-md mt-2 border">
+                    <SearchXIcon size={100} className="stroke-slate-500" />
+                    <p className="font-semibold text-slate-500">
+                        Tidak ditemukan!
+                    </p>
+                </div>
+            )}
+        </>
     );
 }
 

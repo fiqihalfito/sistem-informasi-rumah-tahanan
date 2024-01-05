@@ -3,15 +3,19 @@ import SearchBar from "@/components/tahanan/search";
 import TableTahanan, {
     SkeletonTableTahanan,
 } from "@/components/tahanan/table-tahanan";
+import TahananPagination from "@/components/tahanan/tahanan-pagination";
 import TambahTahanan from "@/components/tahanan/tambah-tahanan";
 import { Suspense } from "react";
 
 export default async function Page({
     searchParams,
 }: {
-    searchParams: { query?: string };
+    searchParams: { query?: string; page?: number };
 }) {
     const query = searchParams?.query ?? "";
+    const page = searchParams?.page ?? 1;
+    // console.log(`page = ${page}`);
+
     return (
         <main>
             <PageHeading>Tahanan</PageHeading>
@@ -22,7 +26,7 @@ export default async function Page({
             </div>
             <div>
                 <Suspense key={query} fallback={<SkeletonTableTahanan />}>
-                    <TableTahanan query={query} />
+                    <TableTahanan query={query} page={page} />
                 </Suspense>
             </div>
         </main>
