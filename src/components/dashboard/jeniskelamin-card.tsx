@@ -5,7 +5,7 @@ import { serverTrpc } from "@/server/trpc/server-caller";
 export default async function JenisKelaminCard() {
     // const data = await fetchJenisKelaminChart();
     const data = await serverTrpc.tahanan.fetchTahananTotalByJenisKelamin();
-    await wait(3000);
+    // await wait(3000);
     return (
         <Card className="border-b-4 border-b-primary ">
             <CardHeader>
