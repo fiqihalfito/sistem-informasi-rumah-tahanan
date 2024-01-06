@@ -78,7 +78,7 @@ export default async function TableTahanan({ query, page }: TableTahananProp) {
             </Table>
 
             {tahanan.totalPages !== 0 ? (
-                <TahananPagination pages={tahanan.totalPages} />
+                <TahananPagination totalPages={tahanan.totalPages} />
             ) : (
                 <div className="shadow h-80 flex flex-col gap-y-4 items-center justify-center bg-white rounded-md mt-2 border">
                     <SearchXIcon size={100} className="stroke-slate-500" />
